@@ -1,5 +1,14 @@
 const fs = require('fs');
-const { response } = require('../app');
+
+exports.checkID = (req, res, next, val) => {
+    if (req.params.id * 1 > users.length) {
+        return res.status(404).json({
+            status: 'fail',
+            message: 'Invalid ID'
+        });
+    }
+    next();
+}
 
 exports.getAllUsers = (req, res => {
     res.status(200).json({
@@ -13,15 +22,8 @@ exports.getAllUsers = (req, res => {
 
 exports.getUser = (req, res => {
     
-    const id = req.params.id * 1
+    const id = req.params.id * 1;
     const user = users.find(el  => el.id === id);
-    
-    if(!user) {
-        return res.status(404).json({
-            status: 'fail',
-            message: 'Invalid ID'
-        });
-    }
 
     res.status(200).json({
         status: 'success',
@@ -46,28 +48,16 @@ exports.createUser = (req, res => {
 });
 
 exports.updateUser = (req, res => {
-    if (req.params.id * 1 > users.length) {
-        return res.status(404).json({
-            status: 'fail',
-            message: 'Invalid ID'
-        });
-    }
 
     res.status(200).json({
         status: 'success',
         data: {
-            user
+            user: 'updated user...'
         }
     });
 });
 
 exports.deleteUser = (req, res => {
-    if (req.params.id * 1 > users.length) {
-        return res.status(404).json({
-            status: 'fail',
-            message: 'Invalid ID'
-        });
-    }
 
     res.status(204).json({
         status: 'success',
