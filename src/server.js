@@ -1,24 +1,24 @@
-const {Sequelize} = require('sequelize');
 const dotenv = require("dotenv");
 dotenv.config({ path: "./config.env" });
 
+const sequelize = require('./config/db')
 const app = require("./app");
 
-const sequelize = new Sequelize(
-  process.env.DB_NAME,
-  process.env.DB_USER,
-  process.env.DB_PASSWORD,
-  {
-    host: process.env.DB_HOST,
-    port: process.env.DB_PORT,
-    dialect: 'postgres',
-    logging: false,
-  }
-);
-
-console.log('db running on port:', process.env.DB_PORT)
 const port = process.env.PORT || 3000;
 
-app.listen(port, () => {
-  console.log(`App running on port ${port}...`);
-});
+async function startServer() {
+  try {
+    await sequelize.authenticate();
+    
+    console.log('DB Connected');
+
+    await sequelize.sync();
+
+    app.listen(port, () => {
+      console.log(`App running on port ${port}...`);
+    });
+
+  } catch (error) {
+    console.error(error)  
+  }
+}
