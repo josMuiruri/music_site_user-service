@@ -1,5 +1,6 @@
 const { Model, DataTypes} = require('sequelize');
 const { Sequelize } = require('./../config/db');
+const sequelize = require('./../config/db');
 
 class User extends Model {}
 
@@ -23,5 +24,7 @@ User.init({
  }, {
         sequelize,
         modelName: 'User_Profile',
-        tableName: 'user_profiles'
+        tableName: 'User_profiles'
     });
+
+console.log(User === sequelize.models.User_Profile)
